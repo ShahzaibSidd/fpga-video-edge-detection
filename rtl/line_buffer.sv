@@ -1,13 +1,13 @@
 module line_buffer #(
-    parameter logic SCREEN_WIDTH,
-    parameter logic DATA_WIDTH
+    parameter int SCREEN_WIDTH,
+    parameter int DATA_WIDTH
 ) (
     input  logic                  clk,
     input  logic [DATA_WIDTH-1:0] data_in,
     output logic [DATA_WIDTH-1:0] data_out
 );
 
-  logic [          DATA_WIDTH-1:0] buffer      [SCREEN_WIDTH];
+  logic [DATA_WIDTH-1:0] buffer[SCREEN_WIDTH];
 
   logic [$clog2(SCREEN_WIDTH)-1:0] counter = 0;
 
