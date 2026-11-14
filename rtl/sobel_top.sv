@@ -1,6 +1,6 @@
 module sobel_top #(
-    parameter int SCREEN_WIDTH,
-    parameter int DATA_WIDTH
+    parameter int SCREEN_WIDTH = 640,
+    parameter int DATA_WIDTH = 8
 ) (
     input logic                  clk,
     input logic                  rst,
