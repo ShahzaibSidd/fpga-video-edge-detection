@@ -38,8 +38,10 @@ def video_to_hex(input_video_path, output_hex_path, target_width=640, target_hei
     cap.release()
 
 if __name__ == "__main__":
-    # Ensure these match the project directory structure
-    INPUT_PATH = "../data/input/raw_video.mp4" 
-    OUTPUT_PATH = "../data/input/frame_in.hex"
+    # Resolve paths relative to the project root (the parent of scripts/),
+    # so the script works regardless of the current working directory.
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    INPUT_PATH = os.path.join(PROJECT_ROOT, "data", "input", "raw_video.mp4")
+    OUTPUT_PATH = os.path.join(PROJECT_ROOT, "data", "input", "frame_in.hex")
 
     video_to_hex(INPUT_PATH, OUTPUT_PATH)

@@ -9,12 +9,13 @@ module line_buffer #(
 
   logic [DATA_WIDTH-1:0] buffer[SCREEN_WIDTH];
 
-  logic [$clog2(SCREEN_WIDTH)-1:0] counter = 0;
+  localparam int CW = $clog2(SCREEN_WIDTH);
+  logic [CW-1:0] counter = 0;
 
   always_ff @(posedge clk) begin
     buffer[counter] <= data_in;
     data_out        <= buffer[counter];
-    if (counter == SCREEN_WIDTH - 1) begin
+    if (counter == CW'(SCREEN_WIDTH - 1)) begin
       counter <= 0;
     end else begin
       counter <= counter + 1;

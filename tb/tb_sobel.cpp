@@ -15,11 +15,11 @@ int main(int argc, char **argv) {
   // Set up GTKWave tracing
   VerilatedVcdC *tfp = new VerilatedVcdC;
   top->trace(tfp, 99);
-  tfp->open("../data/output/wave.vcd");
+  tfp->open("data/output/wave.vcd");
 
   // Open file streams
-  std::ifstream infile("../data/input/frame_in.hex");
-  std::ofstream outfile("../data/output/frame_out.hex");
+  std::ifstream infile("data/input/frame_in.hex");
+  std::ofstream outfile("data/output/frame_out.hex");
 
   if (!infile.is_open() || !outfile.is_open()) {
     std::cerr << "Fatal: Could not open hex files." << std::endl;
