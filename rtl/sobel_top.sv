@@ -1,6 +1,6 @@
 module sobel_top #(
     parameter int SCREEN_WIDTH = 640,
-    parameter int DATA_WIDTH = 8
+    parameter int DATA_WIDTH   = 8
 ) (
     input logic                  clk,
     input logic                  rst,
@@ -20,6 +20,9 @@ module sobel_top #(
 
   logic [DATA_WIDTH-1:0] chosen_in = (valid_in) ? pixel_in : 'd0;
 
+  localparam int PIPELINE_DELAY = (2 * SCREEN_WIDTH) + 2;
+  logic [11:0] pixel_count;
+
   line_buffer #(
       .SCREEN_WIDTH(SCREEN_WIDTH),
       .DATA_WIDTH  (DATA_WIDTH)
@@ -38,6 +41,15 @@ module sobel_top #(
       .data_out(mid_out)
   );
 
+  sobel_math #(
+      .DATA_WIDTH(DATA_WIDTH)
+  ) inst_math (
+      .top_row  (top_row),
+      .mid_row  (mid_row),
+      .bot_row  (bot_row),
+      .pixel_out(pixel_out)
+  );
+
   always_ff @(posedge clk) begin
     if (rst) begin
       top_row <= '0;
@@ -47,6 +59,22 @@ module sobel_top #(
       top_row <= {top_row[1:0], top_out};
       mid_row <= {mid_row[1:0], mid_out};
       bot_row <= {bot_row[1:0], chosen_in};
+    end
+  end
+
+  always_ff @(posedge clk) begin
+    if (rst) begin
+      pixel_count <= '0;
+      valid_out   <= 1'b0;
+    end else if (valid_in) begin
+      if (pixel_count < PIPELINE_DELAY) begin
+        pixel_count <= pixel_count + 1;
+        valid_out   <= 1'b0;
+      end else begin
+        valid_out <= 1'b1;
+      end
+    end else begin
+      valid_out <= 1'b0;
     end
   end
 

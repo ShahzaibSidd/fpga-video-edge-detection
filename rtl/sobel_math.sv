@@ -12,8 +12,10 @@ module sobel_math #(
   logic [10:0] abs_Gx, abs_Gy, magnitude;
 
   always_comb begin
-    Gx = (top_row[0] + mid_row[0] << 1 + bot_row[0]) - (top_row[2] + mid_row[2] << 2 + bot_row[2]);
-    Gy = (top_row[0] + top_row[1] << 1 + top_row[2]) - (bot_row[0] + bot_row[1] << 1 + bot_row[2]);
+    Gx = (top_row[0] + (mid_row[0] << 1) + bot_row[0]) -
+         (top_row[2] + (mid_row[2] << 1) + bot_row[2]);
+    Gy = (top_row[0] + (top_row[1] << 1) + top_row[2]) -
+         (bot_row[0] + (bot_row[1] << 1) + bot_row[2]);
 
     abs_Gx = (Gx[10]) ? -Gx : Gx;
     abs_Gy = (Gy[10]) ? -Gy : Gy;
